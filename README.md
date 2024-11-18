@@ -1,0 +1,1 @@
+ExploreCompose is a learning project I created as part of my  learning journey in mastering **Jetpack Compose**. The goal is to explore modern Android development by showcasing various Jetpack Compose components and best practices. It covers concepts such as recomposition, states, rows and columns and more
