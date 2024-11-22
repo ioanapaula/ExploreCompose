@@ -26,6 +26,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,8 +47,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ExploreComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting()
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        GreetingBackgroundPadding(R.string.app_name)
+                        GreetingNoBackgroundPadding(R.string.app_greeting)
+                    }
                 }
             }
         }
@@ -47,33 +59,128 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(){
-    Box(
-        contentAlignment = Alignment.BottomEnd,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp)){
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-            .background(color = Color.Cyan)){
-            Box(modifier = Modifier.
-                height(100.dp)
-                .width(100.dp)
-                .background(color = Color.Magenta))
-            Text(
-                text = "Hello, I love Android",
-                style = Typography.headlineSmall,
-                fontSize = 30.sp
+fun CustomAnnotatedText(){
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
+            ){
+                append("A")
+            }
+            append("B")
+            append("C")
+            append("D")
         }
-    }
+    )
+}
+
+@Composable
+fun CustomSuperScriptText(
+    normalText: String,
+    superScriptText: String
+){
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                )
+            ){
+                append(normalText)
+            }
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                    fontWeight = FontWeight.Normal,
+                    baselineShift = BaselineShift.Superscript
+                )
+            ){
+                append(superScriptText)
+            }
+        }
+    )
+}
+
+@Composable
+fun CustomSubScriptText(
+    normalText: String,
+    subScriptText: String
+){
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                )
+            ){
+                append(normalText)
+            }
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                    fontWeight = FontWeight.Normal,
+                    baselineShift = BaselineShift.Subscript
+                )
+            ){
+                append(subScriptText)
+            }
+        }
+    )
+}
+
+@Composable
+fun GreetingNoBackgroundPadding(stringId : Int){
+    Text(
+        modifier = Modifier
+            .padding(16.dp)
+            .width(200.dp)
+            .background(MaterialTheme.colorScheme.tertiary),
+        text = stringResource(id = stringId),
+        color = Color.White,
+        style = Typography.headlineSmall,
+        fontSize = 30.sp,
+        textAlign = TextAlign.Center
+        )
+}
+
+@Composable
+fun GreetingBackgroundPadding(stringId : Int){
+    Text(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(16.dp),
+        text = stringResource(id = stringId),
+        style = Typography.bodySmall,
+        color = Color.White,
+        fontStyle = FontStyle.Italic,
+        textAlign = TextAlign.Justify
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     ExploreComposeTheme {
-        Greeting()
+        Column(modifier = Modifier.fillMaxSize()) {
+            GreetingNoBackgroundPadding(R.string.app_name)
+            GreetingBackgroundPadding(R.string.app_greeting)
+            GreetingBackgroundPadding(R.string.app_text)
+            CustomAnnotatedText()
+            CustomSuperScriptText(
+                normalText = "Testing",
+                superScriptText = "superscript text"
+            )
+            CustomSubScriptText(
+                normalText = "Now testing",
+                subScriptText = "subscript" )
+        }
     }
 }
