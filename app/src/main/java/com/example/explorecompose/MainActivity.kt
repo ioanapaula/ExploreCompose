@@ -1,9 +1,11 @@
 package com.example.explorecompose
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.ColorInt
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +24,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         ExpandableCard("Test card", "Figuring out how to make cards. Wasn't easy, but definitely worth the effort. It will make my life easier when I migrate my app to Compose")
+                        GreetingEditTexts()
                     }
                 }
             }
@@ -151,6 +159,40 @@ fun GreetingNoBackgroundPadding(stringId : Int){
 }
 
 @Composable
+fun GreetingEditTexts(){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        var nameText by remember { mutableStateOf("Enter your name") }
+        var descriptionText by remember { mutableStateOf("Tell us something about yourself") }
+        TextField(
+            value = "This field cannot be changed",
+            onValueChange = { },
+            label = { Text("Uneditable Text") },
+            singleLine = true,
+            readOnly = true
+        )
+        TextField(
+            value = nameText,
+            onValueChange = { newText -> nameText = newText },
+            label = { Text("First Name") },
+            singleLine = true
+        )
+        TextField(
+            value = descriptionText,
+            onValueChange = { newText -> descriptionText = newText },
+            label = { Text("About you") },
+            maxLines = 4
+        )
+    }
+}
+
+@Composable
 fun GreetingBackgroundPadding(stringId : Int){
     Text(
         modifier = Modifier
@@ -180,6 +222,7 @@ fun GreetingPreview() {
             CustomSubScriptText(
                 normalText = "Now testing",
                 subScriptText = "subscript" )
+            GreetingEditTexts()
         }
     }
 }
