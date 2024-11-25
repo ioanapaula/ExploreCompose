@@ -49,8 +49,7 @@ class MainActivity : ComponentActivity() {
             ExploreComposeTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column(modifier = Modifier.fillMaxSize()) {
-                        GreetingBackgroundPadding(R.string.app_name)
-                        GreetingNoBackgroundPadding(R.string.app_greeting)
+                        ExpandableCard("Test card", "Figuring out how to make cards. Wasn't easy, but definitely worth the effort. It will make my life easier when I migrate my app to Compose")
                     }
                 }
             }
